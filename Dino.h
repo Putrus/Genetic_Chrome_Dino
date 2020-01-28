@@ -23,10 +23,10 @@ private:
 	float collision_x2;
 	float collision_y1;
 	float collision_y2;
-
+	bool isin_array(int obst[], Obstacle* obstacle);
 
 public:
-	Dino();
+	Dino(int r, int g, int b);
 	~Dino();
 	void Draw(sf::RenderWindow* window);
 	void Move();
@@ -34,5 +34,5 @@ public:
 	void Bend_down();
 	void Human_control();
 	void is_Die(Obstacle * obstacle);
-	void Computer_control();
+	void Computer_control(int dist_jump, int obst_jump[], int dist_bend, int obst_bend[], Obstacle * obstacle);
 };

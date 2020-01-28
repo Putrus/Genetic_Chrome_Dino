@@ -2,7 +2,7 @@
 #include "Dino.h"
 #include "TextureManager.h"
 #include <windows.h>
-Dino::Dino()
+Dino::Dino(int r, int g, int b)
 {
 	this->sprite = new sf::Sprite();
 	for (int i = 1; i < 7; i++)
@@ -12,7 +12,7 @@ Dino::Dino()
 	this->sprite->setTexture(*TextureManager::Get_texture("2.png"));
 	this->sprite->setScale(0.8, 0.8);
 	this->velocity = 0;
-	this->gravitation = 0.005;
+	this->gravitation = 0.003;
 	this->timer = 0;
 	this->is_jump = 0;
 	this->x = 50;
@@ -24,6 +24,7 @@ Dino::Dino()
 	this->collision_x2 = this->x + 135;
 	this->collision_y1 = this->y + 40;
 	this->collision_y2 = this->y + 140;
+	this->sprite->setColor(sf::Color(r, g, b));
 }
 Dino::~Dino()
 {
@@ -54,9 +55,9 @@ void Dino::Move()
 			this->sprite->setTexture(*TextureManager::Get_texture("6.png"));
 			this->foot = true;
 			this->start = clock();
-			this->collision_x1 = this->x + 40;
-			this->collision_x2 = this->x + 135;
-			this->collision_y1 = this->y + 40;
+			this->collision_x1 = this->x + 50;
+			this->collision_x2 = this->x + 176;
+			this->collision_y1 = this->y + 84;
 			this->collision_y2 = this->y + 140;
 		}
 	}
@@ -107,14 +108,13 @@ void Dino::Move()
 
 void Dino::Jump()
 {
-	this->velocity_0 = -2;
+	this->velocity_0 = -1.5;
 	this->is_jump = 1;
 }
 void Dino::Bend_down()
 {
 	this->is_down = 1;
 }
-
 void Dino::Human_control()
 {
 	this->stop = clock();
@@ -134,15 +134,32 @@ void Dino::Human_control()
 	this->Move();
 }
 
+
 void Dino::is_Die(Obstacle * obstacle)
 {
 	if (obstacle->get_x1() < this->collision_x2 && obstacle->get_x2() > this->collision_x1&& obstacle->get_y1() < this->collision_y2&& obstacle->get_y2() > this->collision_y1)
 	{
 		this->sprite->setTexture(*TextureManager::Get_texture("4.png"));
 	}
+
 }
 
-void Dino::Computer_control()
+void Dino::Computer_control(int dist_jump, int obst_jump[], int dist_bend, int obst_bend[], Obstacle* obstacle)
 {
+	this->stop = clock();
+	this->delay_time = (float)((this->stop - this->start) / (CLOCKS_PER_SEC / 100));
+	if (((obstacle->get_x1() - this->x) < dist_jump) && ((obstacle->get_x1() - this->x) > 0) && this->is_jump == 0)
+	{
+		this->Jump();
+	}
+
+
+
+
+	this->Move();
+
 
 }
+
+
+

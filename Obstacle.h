@@ -20,5 +20,6 @@ public:
 	float get_x2();
 	float get_y1();
 	float get_y2();
+	bool is_behind();
 
 };
